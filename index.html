@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Domepath</title>
+        <meta name="description" content="Domepath builds apps that simplify life with clarity in every tap." />
+        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+                    
+        <style>
+            :root{
+                --bg: #fbfbfe;
+                --ink: #0e0f14;
+                --muted: rgba(14,15,20,.65);
+                
+                --accent: rgba(70, 218, 255, 0.18);
+                --accent2: rgba(208, 239, 29, .18);
+                --accent3: rgba(80, 210, 147, 0.16);
+                --accent4: rgba(255, 170, 90, .14);
+            }
+            
+            *{ box-sizing: border-box; }
+            html, body{ height: 100%; }
+            body{
+                margin: 0;
+                font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+                background: var(--bg);
+                color: var(--ink);
+                overflow-x: hidden;
+                scroll-behavior: smooth;
+            }
+            
+            .bg{
+                position: fixed;
+                inset: 0;
+                z-index: -3;
+                overflow: hidden;
+            }
+            .bg::before{
+                content:"";
+                position: absolute;
+                inset: -40%;
+                background: radial-gradient(circle at 20% 10%, rgba(70,255,255,.18), transparent 55%),
+                radial-gradient(circle at 80% 20%, rgba(210,255,255,.16), transparent 55%),
+                radial-gradient(circle at 15% 85%, rgba(80,210,170,.14), transparent 55%),
+                radial-gradient(circle at 85% 90%, rgba(255,255,90,.32), transparent 55%),
+                linear-gradient(135deg, rgba(255,255,255,1), rgba(248,249,255,1));
+                filter: saturate(1.15);
+                transform: translate3d(0,0,0);
+                animation: slowHue 26s ease-in-out infinite alternate;
+            }
+            @keyframes slowHue{
+                0%   { filter: saturate(1.10) hue-rotate(0deg);   transform: translate(-2%, -1%) scale(1.02); }
+                50%  { filter: saturate(1.18) hue-rotate(10deg);  transform: translate(1%, 2%)  scale(1.04); }
+                100% { filter: saturate(1.12) hue-rotate(-8deg);  transform: translate(2%, -1%) scale(1.03); }
+            }
+            
+            .orb{
+                position: absolute;
+                width: 520px;
+                height: 520px;
+                border-radius: 999px;
+                filter: blur(40px);
+                opacity: .85;
+                mix-blend-mode: multiply;
+                transform: translate3d(0,0,0);
+                pointer-events: none;
+                background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), transparent 55%);
+            }
+            .orb.o1{ background: radial-gradient(circle at 30% 30%, var(--accent), transparent 58%); left: -120px; top: 10vh; animation: drift1 34s ease-in-out infinite alternate; }
+            .orb.o2{ background: radial-gradient(circle at 30% 30%, var(--accent2), transparent 58%); right: -160px; top: 14vh; animation: drift2 38s ease-in-out infinite alternate; }
+            .orb.o3{ background: radial-gradient(circle at 30% 30%, var(--accent3), transparent 58%); left: -140px; bottom: -140px; animation: drift3 42s ease-in-out infinite alternate; }
+            .orb.o4{ background: radial-gradient(circle at 30% 30%, var(--accent4), transparent 58%); right: -200px; bottom: -120px; animation: drift4 46s ease-in-out infinite alternate; }
+            
+            @keyframes drift1{ 0%{ transform: translate(0,0) scale(1); } 100%{ transform: translate(120px, 60px) scale(1.08);} }
+            @keyframes drift2{ 0%{ transform: translate(0,0) scale(1); } 100%{ transform: translate(-140px, 80px) scale(1.10);} }
+            @keyframes drift3{ 0%{ transform: translate(0,0) scale(1); } 100%{ transform: translate(160px, -110px) scale(1.08);} }
+            @keyframes drift4{ 0%{ transform: translate(0,0) scale(1); } 100%{ transform: translate(-180px, -90px) scale(1.12);} }
+            
+            .grain{
+                position: fixed;
+                inset: 0;
+                z-index: -2;
+                pointer-events: none;
+                opacity: .5;
+                background-image: url("iconBG.png");
+                background-repeat: no-repeat;
+                background-position: center;
+                
+                mix-blend-mode: multiply;
+            }
+            
+            .shell{
+                min-height: 100vh;
+            }
+            
+            main{
+                height: 100vh;
+                overflow-y: auto;
+                scroll-snap-type: y mandatory;
+                scroll-behavior: smooth;
+            }
+            
+            section{
+                min-height: 100vh;
+                padding: 78px 18px 42px;
+                scroll-snap-align: start;
+                display: grid;
+                place-items: center;
+            }
+            
+            .container{
+                width: min(1100px, 92vw);
+                margin: 0 auto;
+            }
+            
+            .hero{
+                position: relative;
+            }
+            
+            .hero-card {
+                position: relative;
+                border-radius: var(--radius);
+                /* padding: 54px 28px 36px; */
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                overflow: visible;
+                display: grid;
+                place-items: center;
+                min-height: 520px;
+            }
+            
+            .hero-title {
+                text-align: center;
+                font-size: clamp(44px, 7vw, 84px);
+                margin: 0 0 10px;
+                letter-spacing: -1px;
+                line-height: 1.0;
+                color: rgba(255,255,255,.98);
+                text-shadow: 0 10px 32px rgba(0,0,0,.30), 0 2px 10px rgba(0,0,0,.22);
+                position: relative;
+                z-index: 1;
+            }
+            
+            
+            .app-badge{
+                position: absolute;
+                border-radius: 22px;
+                display: grid;
+                place-items: center;
+                transform: translateZ(0);
+                pointer-events: auto;
+                cursor: pointer;
+                transition: transform .25s ease, box-shadow .55s ease, border-color .25s ease;
+                text-decoration: none;
+                color: rgba(14,15,20,.9);
+            }
+            
+            .app-badge:hover{
+                transform: translateY(-4px) scale(1.5);
+                box-shadow: 25px 26px 0px rgba(14,15,20,.08);
+            }
+            
+            .app-badge .mini{
+                width: 100px;
+                height: 100px;
+                border-radius: 14px;
+                object-fit: cover; /* importante */
+                background: rgba(255,255,255,.70);
+            }
+            
+            .b1{ top: -34px; left: 26px; transform: rotate(-12deg); }
+            .b2{ top: -34px; right: 28px; transform: rotate(16deg); }
+            .b3{ bottom: -34px; left: 40px; transform: rotate(20deg); }
+            .b4{ bottom: -34px; right: 36px; transform: rotate(-18deg); }
+        </style>
+    </head>
+    
+    <body>
+        <!-- Background layers -->
+        <div class="bg" aria-hidden="true">
+            <div class="orb o1"></div>
+            <div class="orb o2"></div>
+            <div class="orb o3"></div>
+            <div class="orb o4"></div>
+        </div>
+        <div class="grain" aria-hidden="true"></div>
+        
+        <div class="shell" id="top">
+            <main id="scrollRoot">
+                <!-- HERO -->
+                <section class="hero">
+                    <div class="container">
+                        <div class="hero-card">
+                            <h1 class="hero-title">Domepath</h1>
+                            
+                            <!-- Floating app badges -->
+                            <div class="floating" aria-hidden="false">
+                                <a class="app-badge b1">
+                                    <img class="mini" src="app1.png"/>
+                                </a>
+                                
+                                <a class="app-badge b2">
+                                    <img class="mini" src="app2.png"/>
+                                </a>
+                                
+                                <a class="app-badge b3">
+                                    <img class="mini" src="app3.png"/>
+                                </a>
+                                
+                                <a class="app-badge b4">
+                                    <img class="mini" src="app4.png"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </body>
+</html>
